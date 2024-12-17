@@ -7,7 +7,7 @@ namespace MyWebsite.DAL.Context
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-21A7SAV;initial Catalog=MyWebsite; integrated security=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=.\\;initial Catalog=MyWebsite; integrated security=True;TrustServerCertificate=True;");
         }
 
         public DbSet<About> Abouts { get; set; }
