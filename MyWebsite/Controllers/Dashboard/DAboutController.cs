@@ -15,6 +15,11 @@ namespace MyWebsite.Controllers.Dashboard
             return View(aboutList);
 
         }
+        public IActionResult Edit(int id)
+        {
+            About about = context.Abouts.FirstOrDefault(x => x.AboutID == id);
+            return View(about);
+        }
 
         public IActionResult Create(About about)
         {

@@ -4,14 +4,14 @@
     Layout = "~/Views/Dashboard/_DashboardLayout.cshtml";
 }
 
-<h1>Abouts</h1>
+<h1>Hakkımda Kısmı</h1>
 
 <!-- /.row -->
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Responsive Hover Table</h3>
+                <h3 class="card-title">Hakkında bilgileirni buradan güncelleyebilirsin.</h3>
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -29,20 +29,23 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>User</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Reason</th>
+                            <th>İsim Soyisim</th>
+                            <th>Hakkımda</th>
+                            <th>E-Mail</th>
+                            <th>Telefon</th>
+                            <th>Fotoğrafı</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var item in model){
+                        @foreach(var item in Model){
                         <tr>
                             <td>@item.AboutID</td>
-                            <td>aJohn Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-success">Approved</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                <td>@item.Name</td>
+                                <td>@item.Description</td>
+                                <td>@item.Email</td>
+                                <td>@item.Phone</td>
+                                <td>@item.ImageUrl</td>
+                                <td><a href="Edit/@item.AboutID/" class="btn btn-warning">Düzenle</a></td>
                         </tr>
                         }
                     </tbody>
