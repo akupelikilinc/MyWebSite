@@ -45,7 +45,10 @@
                                 <td>@item.Email</td>
                                 <td>@item.Phone</td>
                                 <td>@item.ImageUrl</td>
-                                <td><a href="Edit/@item.AboutID/" class="btn btn-warning">Düzenle</a></td>
+                                <td>
+                                <a href="Update/@item.AboutID" class="btn btn-warning">Düzenle</a>
+                                <a href="Update/@item.AboutID" class="btn btn-danger">Sil</a>
+                                </td>
                         </tr>
                         }
                     </tbody>

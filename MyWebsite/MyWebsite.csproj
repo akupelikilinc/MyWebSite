@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Uploads\Image\About\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />

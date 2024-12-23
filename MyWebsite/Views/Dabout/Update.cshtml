@@ -1,0 +1,61 @@
+﻿@model About
+@{
+    ViewData["Title"] = "About";
+    Layout = "~/Views/Dashboard/_DashboardLayout.cshtml";
+}
+  <div class="col-md-9">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Quick Example</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+        <form role="form" asp-action="Update" enctype="multipart/form-data">
+                <div class="card-body">
+                    <input type="hidden" name="AboutID" value="" />
+                  <div class="form-group">
+                    <label for="Name">Ad, Soyad</label>
+                    <input type="text" asp-for="Name" class="form-control" id="Name" placeholder="Ad Soyad giriniz.">
+                  </div>
+                <div class="form-group">
+                    <label for="Description">Hakkımda</label>
+                    <textarea rows="4" asp-for="Description" class="form-control" id="Description" placeholder="Kendinizi tanıtınız"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" asp-for="Email" class="form-control" id="email" placeholder="Mailinizi giriniz">
+                </div>
+                <div class="form-group">
+                    <label for="Name">Ad, Soyad</label>
+                    <input type="text" asp-for="Name" class="form-control" id="Name" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon</label>
+                    <input type="tel" asp-for="Phone" class="form-control" id="phone" placeholder="Telefonunuzu giriniz">
+                </div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">File input</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                            <input type="file" asp-for="ImageUrl" class="custom-file-input" id="ImageUrl">
+                            <label class="custom-file-label" for="ImageUrl">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="">Upload</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Güncelle</button>
+                  <a href="/Dabout/About" class="btn btn-warning">Vazgeç</a>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+ 
+          </div>
