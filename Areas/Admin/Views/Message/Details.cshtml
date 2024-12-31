@@ -1,0 +1,60 @@
+@model MyWebsite.DAL.Entities.Message
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Mesaj Detayı</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 200px;">Ad Soyad</th>
+                    <td>@Model.Name</td>
+                </tr>
+                <tr>
+                    <th>E-posta</th>
+                    <td>@Model.Mail</td>
+                </tr>
+                <tr>
+                    <th>Telefon</th>
+                    <td>@Model.Phone</td>
+                </tr>
+                <tr>
+                    <th>Tarih</th>
+                    <td>@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                </tr>
+                <tr>
+                    <th>Mesaj</th>
+                    <td>@Model.MessageText</td>
+                </tr>
+            </table>
+            <div class="mt-3">
+                <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+                <button class="btn btn-danger delete-message" data-id="@Model.MessageId">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.delete-message').click(function () {
+                var id = $(this).data('id');
+
+                if (confirm('Bu mesajı silmek istediğinizden emin misiniz?')) {
+                    $.post('/Admin/Message/Delete/' + id, function (response) {
+                        if (response.success) {
+                            window.location.href = '/Admin/Message';
+                        } else {
+                            toastr.error(response.message || 'Bir hata oluştu.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

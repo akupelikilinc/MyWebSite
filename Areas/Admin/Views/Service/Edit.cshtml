@@ -1,0 +1,58 @@
+@model MyWebsite.DAL.Entities.Service
+@{
+    ViewData["Title"] = "Hizmet Düzenle";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Hizmet Düzenle</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="ServiceId" />
+                <div class="form-group">
+                    <label asp-for="ServiceName">Hizmet Adı</label>
+                    <input asp-for="ServiceName" class="form-control" />
+                    <span asp-validation-for="ServiceName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description">Açıklama</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Icon">İkon</label>
+                    @if (!string.IsNullOrEmpty(Model.Icon))
+                    {
+                        <div class="mb-2">
+                            <img src="@Model.Icon" alt="@Model.ServiceName" style="max-width: 100px;" />
+                        </div>
+                    }
+                    <input type="file" name="icon" class="form-control" accept="image/*" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrderNo">Sıra No</label>
+                    <input asp-for="OrderNo" class="form-control" type="number" min="1" />
+                    <span asp-validation-for="OrderNo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label">Aktif</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

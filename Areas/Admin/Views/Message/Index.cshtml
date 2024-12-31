@@ -1,0 +1,86 @@
+@model IEnumerable<MyWebsite.DAL.Entities.Message>
+@{
+    ViewData["Title"] = "Mesajlar";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Mesajlar</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>E-posta</th>
+                        <th>Telefon</th>
+                        <th>Mesaj</th>
+                        <th>Tarih</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Mail</td>
+                            <td>@item.Phone</td>
+                            <td>@item.MessageText</td>
+                            <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input toggle-read" type="checkbox" 
+                                           @(item.IsRead ? "checked" : "") data-id="@item.MessageId">
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm delete-message" data-id="@item.MessageId">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.delete-message').click(function () {
+                var id = $(this).data('id');
+                var row = $(this).closest('tr');
+
+                if (confirm('Bu mesajı silmek istediğinizden emin misiniz?')) {
+                    $.post('/Admin/Message/Delete/' + id, function (response) {
+                        if (response.success) {
+                            row.remove();
+                            toastr.success('Mesaj başarıyla silindi.');
+                        } else {
+                            toastr.error(response.message || 'Bir hata oluştu.');
+                        }
+                    });
+                }
+            });
+
+            $('.toggle-read').change(function () {
+                var id = $(this).data('id');
+                var checkbox = $(this);
+
+                $.post('/Admin/Message/ToggleRead/' + id, function (response) {
+                    if (response.success) {
+                        toastr.success('Mesaj durumu güncellendi.');
+                    } else {
+                        checkbox.prop('checked', !checkbox.prop('checked'));
+                        toastr.error(response.message || 'Bir hata oluştu.');
+                    }
+                });
+            });
+        });
+    </script>
+}

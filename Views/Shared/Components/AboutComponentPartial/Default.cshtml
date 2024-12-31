@@ -1,0 +1,79 @@
+﻿@model MyWebsite.DAL.Entities.About
+
+@if (Model != null)
+{
+	<div class="arlo_tm_hero" id="home">
+		<div class="background">
+			<a id="video" class="youtube-bg"
+				data-property="{videoURL:'https://www.youtube.com/watch?v=iIrSCm_0Sj4',containment:'#home', showControls:false, autoPlay:true, loop:true, mute:true, startAt:0, opacity:1, quality:'default'}"></a>
+			<div class="overlay"></div>
+		</div>
+		<div class="content">
+			<div class="image_wrap">
+				<div class="main" data-img-url="@Model.ImageUrl"></div>
+			</div>
+			<div class="name_holder">
+				<h3>@Model.Name</h3>
+			</div>
+			<div class="text_typing">
+				<p>I'm a <span class="arlo_tm_animation_text_word"></span></p>
+			</div>
+		</div>
+		<div class="arlo_tm_arrow_wrap bounce anchor">
+			<a href="#about"><i class="xcon-angle-double-down"></i></a>
+		</div>
+	</div>
+	<!-- ABOUT -->
+	<div class="arlo_tm_about" id="about">
+		<div class="container">
+			<div class="arlo_tm_main_title">
+				<span>Biography</span>
+				<h3>About Me</h3>
+			</div>
+			<div class="about_inner">
+				<div class="left">
+					<div class="about_image_wrap parallax" data-relative-input="true">
+						<div class="image layer" data-depth="0.1">
+							<img src="~/Arlo/img/ratios/550x650.jpg" alt="" />
+							<div class="inner" data-img-url="@Model.ImageUrl"></div>
+						</div>
+						<div class="border layer" data-depth="0.2">
+							<img src="~/Arlo/img/ratios/550x650.jpg" alt="" />
+							<div class="inner"></div>
+						</div>
+					</div>
+				</div>
+				<div class="right">
+					<div class="about_title">
+						<h3>I'm @Model.Name and <span class="arlo_tm_animation_text_word"></span></h3>
+					</div>
+					<div class="text">
+						<p>@Model.Description</p>
+					</div>
+					<div class="about_short_contact_wrap">
+						<ul>
+							<li>
+								<img class="svg" src="~/Arlo/img/svg/message-3.svg" alt="" />
+								<span><label>Mail:</label> <a href="mailto:@Model.Email">@Model.Email</a></span>
+							</li>
+							<li>
+								<img class="svg" src="~/Arlo/img/svg/call-2.svg" alt="" />
+								<span><label>Phone:</label> <a href="tel:@Model.Phone">@Model.Phone</a></span>
+							</li>
+						</ul>
+					</div>
+					<div class="arlo_tm_button">
+						<a href="~/Arlo/img/resume/resume.jpg" download><span>Download CV</span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /ABOUT -->
+}
+else
+{
+	<div class="alert alert-warning">
+		Henüz hakkımda bilgisi girilmemiş.
+	</div>
+}

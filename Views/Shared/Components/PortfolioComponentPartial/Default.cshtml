@@ -1,0 +1,41 @@
+﻿@model List<MyWebsite.DAL.Entities.Portfolio>
+
+<div class="arlo_tm_section" id="portfolio">
+	<div class="arlo_tm_portfolio">
+		<div class="container">
+			<div class="arlo_tm_main_title">
+				<span>Portfolio</span>
+				<h3>Featured Works</h3>
+			</div>
+			<div class="portfolio_inner">
+				<div class="arlo_tm_portfolio_titles"></div>
+				<div class="portfolio_filter">
+					<ul>
+						<li><a href="#" class="current" data-filter="*">All</a></li>
+						<li><a href="#" data-filter=".design">Design</a></li>
+						<li><a href="#" data-filter=".photography">Photography</a></li>
+						<li><a href="#" data-filter=".development">Development</a></li>
+					</ul>
+				</div>
+				<div class="portfolio_list">
+					<ul class="gallery_zoom">
+						@foreach (var item in Model.Where(x => x.Status))
+						{
+							<li class="@item.Type wow fadeInLeft" data-wow-duration="1.5s">
+								<div class="inner">
+									<div class="entry arlo_tm_portfolio_animation_wrap" data-title="@item.Title"
+										data-category="@item.Type">
+										<a class="zoom" href="@item.Image">
+											<img src="~/Arlo/img/ratios/ratio-1-1.jpg" alt="" />
+											<div class="main_image" data-img-url="@item.Image"></div>
+										</a>
+									</div>
+								</div>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
