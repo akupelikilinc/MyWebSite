@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişisel Web Sitesi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="profile-section">
+                <div class="profile-image">
+                    <img src="https://www.instagram.com/akupelikilinc/" alt="Ahmet KÜPELİKILINÇ">
+                </div>
+                <div class="profile-info">
+                    <h1 class="name">Ahmet KÜPELİKILINÇ</h1>
+                    <p class="title">Yazılım Geliştirici & İçerik Üreticisi</p>
+                    <p class="description">
+                        Mobil uygulama geliştirme, YouTube içerik üretimi ve teknoloji blog yazarlığı konularında tutkulu bir yazılım geliştiricisiyim. 
+                        Modern teknolojiler kullanarak kullanıcı dostu çözümler geliştirmeyi seviyorum.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://github.com/akupelikilinc" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/akupelikilinc" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.youtube.com/@akupelikilinc" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="https://twitter.com/akupelikilinc" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/akupelikilinc/" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tabs Section -->
+        <section class="tabs-section">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="apps">
+                    <i class="fas fa-mobile-alt"></i>
+                    Mobil Uygulamalarım
+                </button>
+                <button class="tab-btn" data-tab="youtube">
+                    <i class="fab fa-youtube"></i>
+                    YouTube Paylaşımlarım
+                </button>
+                <button class="tab-btn" data-tab="blog">
+                    <i class="fas fa-blog"></i>
+                    Blog
+                </button>
+                <button class="tab-btn" data-tab="projects">
+                    <i class="fas fa-code"></i>
+                    Projelerim
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Mobil Uygulamalar Tab -->
+                <div class="tab-pane active" id="apps">
+                    <h2>Mobil Uygulamalarım</h2>
+                    <div class="apps-grid">
+                        <div class="app-card">
+                            <div class="app-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3>Uygulama 1</h3>
+                            <p>Modern ve kullanıcı dostu mobil uygulama. React Native ile geliştirildi.</p>
+                            <div class="app-links">
+                                <a href="#" class="app-link"><i class="fab fa-google-play"></i> Google Play</a>
+                            </div>
+                        </div>
+                        <div class="app-card">
+                            <div class="app-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <h3>Oyun Uygulaması</h3>
+                            <p>Eğlenceli ve bağımlılık yapıcı mobil oyun. Unity ile geliştirildi.</p>
+                            <div class="app-links">
+                                <a href="#" class="app-link"><i class="fab fa-google-play"></i> Google Play</a>
+                            </div>
+                        </div>
+                        <div class="app-card">
+                            <div class="app-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h3>Hesap Makinesi</h3>
+                            <p>Gelişmiş özellikler sunan hesap makinesi uygulaması.</p>
+                            <div class="app-links">
+                                <a href="#" class="app-link"><i class="fab fa-google-play"></i> Google Play</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- YouTube Tab -->
+                <div class="tab-pane" id="youtube">
+                    <h2>YouTube Paylaşımlarım</h2>
+                    <div class="youtube-grid">
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="YouTube Video">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            <div class="video-info">
+                                <h3>Web Geliştirme İpuçları</h3>
+                                <p>Modern web geliştirme teknikleri ve best practices hakkında detaylı bilgiler.</p>
+                                <span class="video-date">1 hafta önce</span>
+                            </div>
+                        </div>
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/jNQXAC9IVRw/maxresdefault.jpg" alt="YouTube Video">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            <div class="video-info">
+                                <h3>Mobil Uygulama Geliştirme</h3>
+                                <p>React Native ile mobil uygulama geliştirme süreçleri ve püf noktaları.</p>
+                                <span class="video-date">2 hafta önce</span>
+                            </div>
+                        </div>
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/kJQP7kiw5Fk/maxresdefault.jpg" alt="YouTube Video">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            <div class="video-info">
+                                <h3>UI/UX Tasarım Prensipleri</h3>
+                                <p>Kullanıcı deneyimini artıran tasarım prensipleri ve uygulamaları.</p>
+                                <span class="video-date">3 hafta önce</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Tab -->
+                <div class="tab-pane" id="blog">
+                    <h2>Blog Yazılarım</h2>
+                    <div class="blog-grid">
+                        <article class="blog-card">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop&crop=center" alt="Web Geliştirme">
+                            </div>
+                            <div class="blog-content">
+                                <h3>Modern Web Geliştirme Trendleri 2024</h3>
+                                <p>Bu yılın en popüler web geliştirme teknolojileri ve yaklaşımları hakkında detaylı bir analiz.</p>
+                                <div class="blog-meta">
+                                    <span class="blog-date">15 Mart 2024</span>
+                                    <span class="blog-category">Web Geliştirme</span>
+                                </div>
+                                <a href="#" class="read-more">Devamını Oku</a>
+                            </div>
+                        </article>
+                        <article class="blog-card">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop&crop=center" alt="Mobil Geliştirme">
+                            </div>
+                            <div class="blog-content">
+                                <h3>Mobil Uygulama Performans Optimizasyonu</h3>
+                                <p>Mobil uygulamalarınızın performansını artırmak için uygulayabileceğiniz teknikler.</p>
+                                <div class="blog-meta">
+                                    <span class="blog-date">10 Mart 2024</span>
+                                    <span class="blog-category">Mobil Geliştirme</span>
+                                </div>
+                                <a href="#" class="read-more">Devamını Oku</a>
+                            </div>
+                        </article>
+                        <article class="blog-card">
+                            <div class="blog-image">
+                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop&crop=center" alt="AI ve Makine Öğrenmesi">
+                            </div>
+                            <div class="blog-content">
+                                <h3>AI ve Makine Öğrenmesi Geleceği</h3>
+                                <p>Yapay zeka teknolojilerinin yazılım geliştirme süreçlerine etkileri.</p>
+                                <div class="blog-meta">
+                                    <span class="blog-date">5 Mart 2024</span>
+                                    <span class="blog-category">AI/ML</span>
+                                </div>
+                                <a href="#" class="read-more">Devamını Oku</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Projeler Tab -->
+                <div class="tab-pane" id="projects">
+                    <h2>Siteler</h2>
+                    <div class="projects-grid">
+                        <div class="project-card">
+                            <div class="project-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h3>Sayar İnşaat</h3>
+                            <p>Profesyonel inşaat şirketi web sitesi. Modern tasarım ve SEO optimizasyonu ile geliştirildi.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML/CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">WordPress</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://sayarinsaat.com.tr/" class="project-link" target="_blank">Siteyi Ziyaret Et</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <h3>Özyılmaz Taşımacılık</h3>
+                            <p>Lojistik ve taşımacılık şirketi web sitesi. Responsive tasarım ve hızlı yükleme süreleri.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML/CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">WordPress</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://ozyilmaztasimacilik.com/" class="project-link" target="_blank">Siteyi Ziyaret Et</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <h3>Yerli Oto Makas</h3>
+                            <p>Otomotiv servis şirketi web sitesi. Kullanıcı dostu arayüz ve online randevu sistemi.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML/CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">WordPress</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://yerliotomakas.com/" class="project-link" target="_blank">Siteyi Ziyaret Et</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <h3>Miezden Uca</h3>
+                            <p>Romanya'da faaliyet gösteren e-ticaret platformu. Güvenli ödeme sistemleri ve çok dilli destek.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">WooCommerce</span>
+                                <span class="tech-tag">PHP</span>
+                                <span class="tech-tag">MySQL</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://miezdenuca.ro" class="project-link" target="_blank">Siteyi Ziyaret Et</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <h3>Ayan Market</h3>
+                            <p>İtalya'da faaliyet gösteren online market. Geniş ürün yelpazesi ve hızlı teslimat.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">WooCommerce</span>
+                                <span class="tech-tag">PHP</span>
+                                <span class="tech-tag">MySQL</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://ayanmarket.it" class="project-link" target="_blank">Siteyi Ziyaret Et</a>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Dashboard Uygulaması</h3>
+                            <p>Veri görselleştirme ve analiz dashboard'u. Vue.js ve D3.js ile geliştirildi.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Vue.js</span>
+                                <span class="tech-tag">D3.js</span>
+                                <span class="tech-tag">Firebase</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link">Demo</a>
+                                <a href="#" class="project-link">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
