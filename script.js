@@ -276,10 +276,8 @@ function fetchYouTubeVideos() {
         })
         .catch(error => {
             console.error('YouTube API hatası:', error);
-            const youtubeGrid = document.querySelector('.youtube-grid');
-            if (youtubeGrid) {
-                youtubeGrid.innerHTML = `<p style="text-align: center; color: #c0c0c0; grid-column: 1/-1;">Video yüklenirken hata oluştu: ${error.message}. CORS sorunu olabilir.</p>`;
-            }
+            console.log('Statik videolar gösteriliyor...');
+            displayStaticVideos();
         });
 }
 
@@ -321,7 +319,9 @@ function testChannelIds() {
                 }
             });
         } else {
-            throw new Error('Hiçbir channel ID çalışmıyor');
+            console.log('Hiçbir channel ID çalışmıyor, statik videolar gösteriliyor');
+            displayStaticVideos();
+            return Promise.resolve({ items: [] }); // Boş response döndür
         }
     });
 }
