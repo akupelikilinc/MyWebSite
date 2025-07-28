@@ -209,80 +209,127 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // YouTube API ile videoları çek ve göster
 const YOUTUBE_API_KEY = 'AIzaSyDnq-5Gr4CRtyPPTvAVSqKoZ_676Ttku8Q';
-const CHANNEL_USERNAME = 'akupelikilinc';
+const CHANNEL_ID = 'UCakupelikilinc'; // Doğrudan channel ID kullanıyoruz
 const MAX_RESULTS = 6;
+
+// Test için farklı channel ID'ler deneyelim
+const TEST_CHANNEL_IDS = [
+    'UCakupelikilinc',
+    'UCakupelikilinc123',
+    'UCakupelikilinc_',
+    'UCakupelikilinc1'
+];
 
 function fetchYouTubeVideos() {
     console.log('YouTube API çağrısı başlatılıyor...');
     
-    // Önce kanal ID'sini al
-    fetch(`https://www.googleapis.com/youtube/v3/channels?part=id&forUsername=${CHANNEL_USERNAME}&key=${YOUTUBE_API_KEY}`)
+    // Önce kullanıcı adı ile kanal arayalım
+    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=akupelikilinc&type=channel&key=${YOUTUBE_API_KEY}`)
         .then(res => {
-            console.log('Kanal API yanıtı:', res);
+            console.log('Kanal arama yanıtı:', res);
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
             return res.json();
         })
         .then(data => {
-            console.log('Kanal verisi:', data);
-            let channelId = null;
+            console.log('Kanal arama verisi:', data);
+            
             if (data.items && data.items.length > 0) {
-                channelId = data.items[0].id;
+                // Kanal bulundu, videolarını çek
+                const channelId = data.items[0].id.channelId;
                 console.log('Kanal ID bulundu:', channelId);
+                return fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`);
             } else {
-                console.log('Kanal bulunamadı, fallback kullanılıyor');
-                // Eğer kullanıcı adı ile bulamazsa, custom url ise elle kanal id girilebilir
-                channelId = 'UCwQnQK5pQnB8QwK8kQwK8kQ'; // fallback, gerekirse güncellenir
+                // Kanal bulunamadı, test channel ID'lerini dene
+                console.log('Kanal bulunamadı, test ID\'leri deneniyor...');
+                return testChannelIds();
             }
-            // Videoları çek
-            return fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`);
         })
         .then(res => {
-            console.log('Video API yanıtı:', res);
-            return res.json();
+            if (res && res.json) {
+                return res.json();
+            } else {
+                return res; // testChannelIds'den gelen sonuç
+            }
         })
         .then(data => {
             console.log('Video verisi:', data);
-            const youtubeGrid = document.querySelector('.youtube-grid');
-            if (!youtubeGrid) {
-                console.log('YouTube grid bulunamadı');
-                return;
-            }
-            youtubeGrid.innerHTML = '';
-            if (data.items && data.items.length > 0) {
-                data.items.forEach(item => {
-                    if (item.id.kind === 'youtube#video') {
-                        const videoId = item.id.videoId;
-                        const snippet = item.snippet;
-                        const videoCard = document.createElement('div');
-                        videoCard.className = 'video-card';
-                        videoCard.innerHTML = `
-                            <div class="video-thumbnail">
-                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
-                                    <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" alt="${snippet.title}">
-                                    <div class="play-button"><i class="fas fa-play"></i></div>
-                                </a>
-                            </div>
-                            <div class="video-info">
-                                <h3>${snippet.title}</h3>
-                                <p>${snippet.description.substring(0, 80)}...</p>
-                                <span class="video-date">${new Date(snippet.publishedAt).toLocaleDateString('tr-TR')}</span>
-                            </div>
-                        `;
-                        youtubeGrid.appendChild(videoCard);
-                        console.log('Video kartı eklendi:', snippet.title);
-                    }
-                });
-            } else {
-                console.log('Video bulunamadı');
-                youtubeGrid.innerHTML = '<p style="text-align: center; color: #c0c0c0; grid-column: 1/-1;">Henüz video yayınlanmamış veya API erişimi kısıtlı.</p>';
-            }
+            displayVideos(data);
         })
         .catch(error => {
             console.error('YouTube API hatası:', error);
             const youtubeGrid = document.querySelector('.youtube-grid');
             if (youtubeGrid) {
-                youtubeGrid.innerHTML = '<p style="text-align: center; color: #c0c0c0; grid-column: 1/-1;">Video yüklenirken hata oluştu. Lütfen daha sonra tekrar deneyin.</p>';
+                youtubeGrid.innerHTML = `<p style="text-align: center; color: #c0c0c0; grid-column: 1/-1;">Video yüklenirken hata oluştu: ${error.message}</p>`;
             }
         });
+}
+
+function testChannelIds() {
+    console.log('Test channel ID\'leri deneniyor...');
+    
+    const promises = TEST_CHANNEL_IDS.map(channelId => 
+        fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1`)
+            .then(res => res.json())
+            .then(data => ({ channelId, data }))
+            .catch(error => ({ channelId, error: error.message }))
+    );
+    
+    return Promise.all(promises).then(results => {
+        console.log('Test sonuçları:', results);
+        
+        // Çalışan bir channel ID bul
+        const workingResult = results.find(result => 
+            result.data && result.data.items && result.data.items.length > 0
+        );
+        
+        if (workingResult) {
+            console.log('Çalışan channel ID bulundu:', workingResult.channelId);
+            return fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${workingResult.channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`);
+        } else {
+            throw new Error('Hiçbir channel ID çalışmıyor');
+        }
+    });
+}
+
+function displayVideos(data) {
+    const youtubeGrid = document.querySelector('.youtube-grid');
+    if (!youtubeGrid) {
+        console.log('YouTube grid bulunamadı');
+        return;
+    }
+    
+    youtubeGrid.innerHTML = '';
+    
+    if (data.items && data.items.length > 0) {
+        data.items.forEach(item => {
+            if (item.id.kind === 'youtube#video') {
+                const videoId = item.id.videoId;
+                const snippet = item.snippet;
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail">
+                        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer">
+                            <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" alt="${snippet.title}">
+                            <div class="play-button"><i class="fas fa-play"></i></div>
+                        </a>
+                    </div>
+                    <div class="video-info">
+                        <h3>${snippet.title}</h3>
+                        <p>${snippet.description.substring(0, 80)}...</p>
+                        <span class="video-date">${new Date(snippet.publishedAt).toLocaleDateString('tr-TR')}</span>
+                    </div>
+                `;
+                youtubeGrid.appendChild(videoCard);
+                console.log('Video kartı eklendi:', snippet.title);
+            }
+        });
+    } else {
+        console.log('Video bulunamadı');
+        youtubeGrid.innerHTML = '<p style="text-align: center; color: #c0c0c0; grid-column: 1/-1;">Henüz video yayınlanmamış veya API erişimi kısıtlı.</p>';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
