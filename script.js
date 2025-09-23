@@ -217,22 +217,11 @@ async function fetchYouTubeVideos() {
     const loading = document.getElementById('youtubeLoading');
     const errorBox = document.getElementById('youtubeError');
     try {
-        if (!YOUTUBE_API_KEY) {
-            throw new Error('API anahtarı gerekli');
-        }
-
-        // 1) Kanal kimliğini al (handle ile)
-        const channelResp = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${encodeURIComponent(CHANNEL_HANDLE)}&key=${YOUTUBE_API_KEY}`);
-        if (!channelResp.ok) throw new Error('Kanal bilgisi alınamadı');
-        const channelData = await channelResp.json();
-        const channelId = channelData.items && channelData.items[0] && channelData.items[0].id;
-        if (!channelId) throw new Error('Kanal ID bulunamadı');
-
-        // 2) Son videoları çek
-        const videosResp = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`);
-        if (!videosResp.ok) throw new Error('Video listesi alınamadı');
-        const videosData = await videosResp.json();
-        displayVideos(videosData);
+        // Serverless proxy (ör: Vercel) üzerinden çağır
+        const resp = await fetch(`/api/youtube?handle=${encodeURIComponent(CHANNEL_HANDLE)}&max=${MAX_RESULTS}`);
+        if (!resp.ok) throw new Error(`HTTP error! status: ${resp.status}`);
+        const data = await resp.json();
+        displayVideos(data);
     } catch (err) {
         console.error('YouTube hata:', err);
         if (loading) loading.style.display = 'none';
