@@ -207,139 +207,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }); 
 
-// YouTube API ile videoları çek ve göster
+// YouTube API ile videoları çek ve göster (CORS proxy olmadan)
 const YOUTUBE_API_KEY = 'AIzaSyDnq-5Gr4CRtyPPTvAVSqKoZ_676Ttku8Q';
-const CHANNEL_ID = 'UCakupelikilinc'; // Doğrudan channel ID kullanıyoruz
+const CHANNEL_HANDLE = '@akupelikilinc';
 const MAX_RESULTS = 6;
 
-// Test için farklı channel ID'ler deneyelim
-const TEST_CHANNEL_IDS = [
-    'UCakupelikilinc',
-    'UCakupelikilinc123',
-    'UCakupelikilinc_',
-    'UCakupelikilinc1'
-];
-
-function fetchYouTubeVideos() {
-    console.log('YouTube API çağrısı başlatılıyor...');
-    
-    // CORS sorunu için proxy kullanıyoruz
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=akupelikilinc&type=channel&key=${YOUTUBE_API_KEY}`;
-    
-    // Önce kullanıcı adı ile kanal arayalım
-    fetch(proxyUrl + apiUrl, {
-        method: 'GET',
-        headers: {
-            'Origin': window.location.origin,
-            'X-Requested-With': 'XMLHttpRequest'
+async function fetchYouTubeVideos() {
+    const grid = document.getElementById('youtubeGrid');
+    const loading = document.getElementById('youtubeLoading');
+    const errorBox = document.getElementById('youtubeError');
+    try {
+        if (!YOUTUBE_API_KEY) {
+            throw new Error('API anahtarı gerekli');
         }
-    })
-        .then(res => {
-            console.log('Kanal arama yanıtı:', res);
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-        })
-        .then(data => {
-            console.log('Kanal arama verisi:', data);
-            
-            if (data.items && data.items.length > 0) {
-                // Kanal bulundu, videolarını çek
-                const channelId = data.items[0].id.channelId;
-                console.log('Kanal ID bulundu:', channelId);
-                const videoApiUrl = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`;
-                return fetch(proxyUrl + videoApiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Origin': window.location.origin,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-            } else {
-                // Kanal bulunamadı, test channel ID'lerini dene
-                console.log('Kanal bulunamadı, test ID\'leri deneniyor...');
-                return testChannelIds();
-            }
-        })
-        .then(res => {
-            if (res && res.json) {
-                return res.json();
-            } else {
-                return res; // testChannelIds'den gelen sonuç
-            }
-        })
-        .then(data => {
-            console.log('Video verisi:', data);
-            displayVideos(data);
-        })
-        .catch(error => {
-            console.error('YouTube API hatası:', error);
-            console.log('Statik videolar gösteriliyor...');
-            displayStaticVideos();
-        });
-}
 
-function testChannelIds() {
-    console.log('Test channel ID\'leri deneniyor...');
-    
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    
-    const promises = TEST_CHANNEL_IDS.map(channelId => {
-        const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1`;
-        return fetch(proxyUrl + apiUrl, {
-            method: 'GET',
-            headers: {
-                'Origin': window.location.origin,
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-            .then(res => res.json())
-            .then(data => ({ channelId, data }))
-            .catch(error => ({ channelId, error: error.message }));
-    });
-    
-    return Promise.all(promises).then(results => {
-        console.log('Test sonuçları:', results);
-        
-        // Çalışan bir channel ID bul
-        const workingResult = results.find(result => 
-            result.data && result.data.items && result.data.items.length > 0
-        );
-        
-        if (workingResult) {
-            console.log('Çalışan channel ID bulundu:', workingResult.channelId);
-            const videoApiUrl = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${workingResult.channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`;
-            return fetch(proxyUrl + videoApiUrl, {
-                method: 'GET',
-                headers: {
-                    'Origin': window.location.origin,
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
-        } else {
-            console.log('Hiçbir channel ID çalışmıyor, statik videolar gösteriliyor');
-            displayStaticVideos();
-            return Promise.resolve({ items: [] }); // Boş response döndür
-        }
-    });
+        // 1) Kanal kimliğini al (handle ile)
+        const channelResp = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${encodeURIComponent(CHANNEL_HANDLE)}&key=${YOUTUBE_API_KEY}`);
+        if (!channelResp.ok) throw new Error('Kanal bilgisi alınamadı');
+        const channelData = await channelResp.json();
+        const channelId = channelData.items && channelData.items[0] && channelData.items[0].id;
+        if (!channelId) throw new Error('Kanal ID bulunamadı');
+
+        // 2) Son videoları çek
+        const videosResp = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`);
+        if (!videosResp.ok) throw new Error('Video listesi alınamadı');
+        const videosData = await videosResp.json();
+        displayVideos(videosData);
+    } catch (err) {
+        console.error('YouTube hata:', err);
+        if (loading) loading.style.display = 'none';
+        if (errorBox) errorBox.style.display = 'block';
+        displayStaticVideos();
+    } finally {
+        if (loading) loading.style.display = 'none';
+    }
 }
 
 function displayVideos(data) {
-    const youtubeGrid = document.querySelector('.youtube-grid');
-    if (!youtubeGrid) {
-        console.log('YouTube grid bulunamadı');
-        return;
-    }
-    
+    const youtubeGrid = document.getElementById('youtubeGrid');
+    if (!youtubeGrid) return;
     youtubeGrid.innerHTML = '';
-    
+
     if (data.items && data.items.length > 0) {
         data.items.forEach(item => {
-            if (item.id.kind === 'youtube#video') {
-                const videoId = item.id.videoId;
+            if (item.id && (item.id.kind === 'youtube#video' || item.id.videoId)) {
+                const videoId = item.id.videoId || (item.id.kind === 'youtube#video' ? item.id.videoId : null);
                 const snippet = item.snippet;
+                if (!videoId || !snippet) return;
                 const videoCard = document.createElement('div');
                 videoCard.className = 'video-card';
                 videoCard.innerHTML = `
@@ -351,45 +265,30 @@ function displayVideos(data) {
                     </div>
                     <div class="video-info">
                         <h3>${snippet.title}</h3>
-                        <p>${snippet.description.substring(0, 80)}...</p>
-                        <span class="video-date">${new Date(snippet.publishedAt).toLocaleDateString('tr-TR')}</span>
+                        <p>${(snippet.description || '').substring(0, 100)}...</p>
+                        <span class="video-date">${snippet.publishedAt ? new Date(snippet.publishedAt).toLocaleDateString('tr-TR') : ''}</span>
                     </div>
                 `;
                 youtubeGrid.appendChild(videoCard);
-                console.log('Video kartı eklendi:', snippet.title);
             }
         });
-    } else {
-        console.log('Video bulunamadı, statik veriler gösteriliyor');
+    }
+    if (!youtubeGrid.children.length) {
         displayStaticVideos();
     }
 }
 
 function displayStaticVideos() {
-    const youtubeGrid = document.querySelector('.youtube-grid');
+    const youtubeGrid = document.getElementById('youtubeGrid');
     if (!youtubeGrid) return;
-    
+    if (youtubeGrid.children.length) return;
+
     const staticVideos = [
-        {
-            id: 'dQw4w9WgXcQ',
-            title: 'Web Geliştirme İpuçları',
-            description: 'Modern web geliştirme teknikleri ve best practices hakkında detaylı bilgiler.',
-            date: '1 hafta önce'
-        },
-        {
-            id: 'jNQXAC9IVRw',
-            title: 'Mobil Uygulama Geliştirme',
-            description: 'React Native ile mobil uygulama geliştirme süreçleri ve püf noktaları.',
-            date: '2 hafta önce'
-        },
-        {
-            id: 'kJQP7kiw5Fk',
-            title: 'UI/UX Tasarım Prensipleri',
-            description: 'Kullanıcı deneyimini artıran tasarım prensipleri ve uygulamaları.',
-            date: '3 hafta önce'
-        }
+        { id: 'dQw4w9WgXcQ', title: 'Web Geliştirme İpuçları', description: 'Modern web geliştirme teknikleri ve pratik ipuçları.', date: '1 hafta önce' },
+        { id: 'jNQXAC9IVRw', title: 'Mobil Uygulama Geliştirme', description: 'React Native ile geliştirme süreci.', date: '2 hafta önce' },
+        { id: 'kJQP7kiw5Fk', title: 'UI/UX Tasarım Prensipleri', description: 'Kullanıcı odaklı tasarım prensipleri.', date: '3 hafta önce' }
     ];
-    
+
     staticVideos.forEach(video => {
         const videoCard = document.createElement('div');
         videoCard.className = 'video-card';
@@ -411,6 +310,5 @@ function displayStaticVideos() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM yüklendi, YouTube videoları çekiliyor...');
     fetchYouTubeVideos();
-}); 
+});

@@ -87,46 +87,14 @@
                 <!-- YouTube Tab -->
                 <div class="tab-pane" id="youtube">
                     <h2>YouTube Paylaşımlarım</h2>
-                    <div class="youtube-grid">
-                        <div class="video-card">
-                            <div class="video-thumbnail">
-                                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="YouTube Video">
-                                <div class="play-button">
-                                    <i class="fas fa-play"></i>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3>Web Geliştirme İpuçları</h3>
-                                <p>Modern web geliştirme teknikleri ve best practices hakkında detaylı bilgiler.</p>
-                                <span class="video-date">1 hafta önce</span>
-                            </div>
-                        </div>
-                        <div class="video-card">
-                            <div class="video-thumbnail">
-                                <img src="https://img.youtube.com/vi/jNQXAC9IVRw/maxresdefault.jpg" alt="YouTube Video">
-                                <div class="play-button">
-                                    <i class="fas fa-play"></i>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3>Mobil Uygulama Geliştirme</h3>
-                                <p>React Native ile mobil uygulama geliştirme süreçleri ve püf noktaları.</p>
-                                <span class="video-date">2 hafta önce</span>
-                            </div>
-                        </div>
-                        <div class="video-card">
-                            <div class="video-thumbnail">
-                                <img src="https://img.youtube.com/vi/kJQP7kiw5Fk/maxresdefault.jpg" alt="YouTube Video">
-                                <div class="play-button">
-                                    <i class="fas fa-play"></i>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3>UI/UX Tasarım Prensipleri</h3>
-                                <p>Kullanıcı deneyimini artıran tasarım prensipleri ve uygulamaları.</p>
-                                <span class="video-date">3 hafta önce</span>
-                            </div>
-                        </div>
+                    <div class="youtube-grid" id="youtubeGrid">
+                        <!-- Videolar dinamik olarak yüklenecek -->
+                    </div>
+                    <div id="youtubeLoading" style="text-align:center; margin-top:1rem; color:#808080;">
+                        Videolar yükleniyor...
+                    </div>
+                    <div id="youtubeError" style="display:none; text-align:center; margin-top:1rem; color:#ff6b6b;">
+                        Videolar yüklenemedi. Lütfen daha sonra tekrar deneyin.
                     </div>
                 </div>
 
