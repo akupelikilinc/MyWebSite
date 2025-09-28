@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // YouTube API ile videoları çek ve göster (CORS proxy olmadan)
 const YOUTUBE_API_KEY = 'AIzaSyDnq-5Gr4CRtyPPTvAVSqKoZ_676Ttku8Q';
-const CHANNEL_HANDLE = '@akupelikilinc';
+const CHANNEL_ID = 'UCDOQkn4DWRdpjoC-obymdHA';
 const MAX_RESULTS = 6;
 
 async function fetchYouTubeVideos() {
@@ -220,7 +220,7 @@ async function fetchYouTubeVideos() {
         // 1) Serverless proxy (varsa) üzerinden çağır
         let data = null;
         try {
-            const resp = await fetch(`/api/youtube?handle=${encodeURIComponent(CHANNEL_HANDLE)}&max=${MAX_RESULTS}`);
+            const resp = await fetch(`/api/youtube?channelId=${encodeURIComponent(CHANNEL_ID)}&max=${MAX_RESULTS}`);
             if (resp.ok) {
                 data = await resp.json();
             }
@@ -229,13 +229,7 @@ async function fetchYouTubeVideos() {
         // 2) Proxy yoksa doğrudan YouTube Data API v3'e düş
         if (!data) {
             if (!YOUTUBE_API_KEY) throw new Error('API anahtarı gerekli');
-            const channelResp = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${encodeURIComponent(CHANNEL_HANDLE)}&key=${YOUTUBE_API_KEY}`);
-            if (!channelResp.ok) throw new Error(`Kanal bilgisi alınamadı (status ${channelResp.status})`);
-            const channelData = await channelResp.json();
-            const channelId = channelData.items && channelData.items[0] && channelData.items[0].id;
-            if (!channelId) throw new Error('Kanal ID bulunamadı');
-
-            const videosResp = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`);
+            const videosResp = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`);
             if (!videosResp.ok) throw new Error(`Video listesi alınamadı (status ${videosResp.status})`);
             data = await videosResp.json();
         }
