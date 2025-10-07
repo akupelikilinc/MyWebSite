@@ -1,25 +1,36 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MyWebSite.Admin.Core.Entities;
 using MyWebSite.Admin.Infrastructure.Configuration;
 
 namespace MyWebSite.Admin.Infrastructure.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         private readonly AdminConfiguration _adminConfig;
         private readonly YouTubeConfiguration _youtubeConfig;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, AdminConfiguration adminConfig, YouTubeConfiguration youtubeConfig) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options, 
+            IOptions<AdminConfiguration> adminConfig,
+            IOptions<YouTubeConfiguration> youtubeConfig) : base(options)
         {
-            _adminConfig = adminConfig;
-            _youtubeConfig = youtubeConfig;
+            _adminConfig = adminConfig.Value;
+            _youtubeConfig = youtubeConfig.Value;
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<YouTubeVideo> YouTubeVideos { get; set; }
         public DbSet<SiteSettings> SiteSettings { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+            base.OnConfiguring(optionsBuilder);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +39,7 @@ namespace MyWebSite.Admin.Infrastructure.Data
             // User configuration
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Username).IsUnique();
+                entity.HasIndex(e => e.UserName).IsUnique();
                 entity.HasIndex(e => e.Email).IsUnique();
             });
 
@@ -36,10 +47,6 @@ namespace MyWebSite.Admin.Infrastructure.Data
             modelBuilder.Entity<BlogPost>(entity =>
             {
                 entity.HasIndex(e => e.Slug).IsUnique();
-                entity.HasOne(e => e.User)
-                      .WithMany()
-                      .HasForeignKey(e => e.UserId)
-                      .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Project configuration
@@ -73,7 +80,7 @@ namespace MyWebSite.Admin.Infrastructure.Data
                 new User
                 {
                     Id = 1,
-                    Username = _adminConfig.Username,
+                    UserName = _adminConfig.Username,
                     Email = _adminConfig.Email,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(_adminConfig.Password),
                     FirstName = _adminConfig.FirstName,
@@ -93,7 +100,7 @@ namespace MyWebSite.Admin.Infrastructure.Data
                     Value = "Ahmet KÜPELİKILINÇ - Yazılım Geliştirici",
                     Description = "Site başlığı",
                     Type = "String",
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedAt = new DateTime(2025, 1, 1),
                     IsActive = true
                 },
                 new SiteSettings

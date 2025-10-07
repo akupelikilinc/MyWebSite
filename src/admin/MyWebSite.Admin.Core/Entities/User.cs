@@ -1,20 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyWebSite.Admin.Core.Entities
 {
-    public class User : BaseEntity
+    public class User : IdentityUser<int>
     {
-        [Required]
-        [MaxLength(100)]
-        public string Username { get; set; } = string.Empty;
-        
-        [Required]
-        [MaxLength(200)]
-        public string Email { get; set; } = string.Empty;
-        
-        [Required]
-        public string PasswordHash { get; set; } = string.Empty;
-        
         [MaxLength(100)]
         public string? FirstName { get; set; }
         
@@ -24,8 +14,12 @@ namespace MyWebSite.Admin.Core.Entities
         [MaxLength(20)]
         public string Role { get; set; } = "Admin";
         
+        public DateTime CreatedAt { get; set; }
+        
         public DateTime? LastLoginAt { get; set; }
         
         public string? ProfileImageUrl { get; set; }
+        
+        public bool IsActive { get; set; } = true;
     }
 }
