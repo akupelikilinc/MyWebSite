@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyWebSite.Admin.Core\MyWebSite.Admin.Core.csproj" />
     <ProjectReference Include="..\MyWebSite.Admin.Infrastructure\MyWebSite.Admin.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyWebSite.Admin.Application\MyWebSite.Admin.Application.csproj" />
   </ItemGroup>
 
 </Project>

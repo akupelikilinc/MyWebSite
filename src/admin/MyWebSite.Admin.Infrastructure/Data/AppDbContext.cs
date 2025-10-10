@@ -73,25 +73,51 @@ namespace MyWebSite.Admin.Infrastructure.Data
             SeedData(modelBuilder);
         }
 
-        private void SeedData(ModelBuilder modelBuilder)
-        {
-            // Admin user
-            modelBuilder.Entity<User>().HasData(
-                new User
-                {
-                    Id = 1,
-                    UserName = _adminConfig.Username,
-                    Email = _adminConfig.Email,
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(_adminConfig.Password),
-                    FirstName = _adminConfig.FirstName,
-                    LastName = _adminConfig.LastName,
-                    Role = _adminConfig.Role,
-                    CreatedAt = new DateTime(2025, 1, 1),
-                    IsActive = true
-                }
-            );
+private void SeedData(ModelBuilder modelBuilder)
+{
+    if (string.IsNullOrEmpty(_adminConfig?.Password))
+    {
+        throw new InvalidOperationException("Admin password cannot be null or empty");
+    }
 
-            // Site settings
+    var adminUser = new User
+    {
+        Id = 1,
+        UserName = _adminConfig.Username,
+        NormalizedUserName = _adminConfig.Username?.ToUpper(),
+        Email = _adminConfig.Email,
+        NormalizedEmail = _adminConfig.Email?.ToUpper(),
+        FirstName = _adminConfig.FirstName,
+        LastName = _adminConfig.LastName,
+        Role = _adminConfig.Role,
+        EmailConfirmed = true,
+        SecurityStamp = Guid.NewGuid().ToString(),
+        ConcurrencyStamp = Guid.NewGuid().ToString(),
+        CreatedAt = new DateTime(2025, 1, 1),
+        IsActive = true
+    };
+
+    var hasher = new PasswordHasher<User>();
+    adminUser.PasswordHash = hasher.HashPassword(adminUser, _adminConfig.Password);
+
+    // Admin user
+    modelBuilder.Entity<User>().HasData(adminUser);
+
+    // Admin role
+    modelBuilder.Entity<IdentityRole<int>>().HasData(new IdentityRole<int>
+    {
+        Id = 1,
+        Name = "Admin",
+        NormalizedName = "ADMIN",
+        ConcurrencyStamp = Guid.NewGuid().ToString()
+    });
+
+    // Admin user role
+    modelBuilder.Entity<IdentityUserRole<int>>().HasData(new IdentityUserRole<int>
+    {
+        UserId = 1,
+        RoleId = 1
+    });            // Site settings
             modelBuilder.Entity<SiteSettings>().HasData(
                 new SiteSettings
                 {
