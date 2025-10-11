@@ -108,7 +108,7 @@ namespace MyWebSite.Admin.Web.Services
 
     public class ErrorResponse
     {
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
     }
 
     public class AuthenticationException : Exception
