@@ -1,127 +1,218 @@
-# Kişisel Web Sitesi
+# MyWebSite - Modern Portfolio & CMS
 
-Modern, sade ve responsive bir kişisel web sitesi. Profil bilgileri, mobil uygulamalar, YouTube paylaşımları, blog yazıları ve projeler için sekme tabanlı bir arayüz sunar.
+Modern, esnek ve ölçeklenebilir bir portfolio ve içerik yönetim sistemi. React frontend, Node.js backend ve PostgreSQL veritabanı ile geliştirilmiştir.
 
 ## 🚀 Özellikler
 
-- **Modern Tasarım**: Glassmorphism ve gradient efektleri ile modern görünüm
-- **Responsive**: Tüm cihazlarda mükemmel görünüm
-- **Sekme Sistemi**: Organize edilmiş içerik kategorileri
-- **Animasyonlar**: Smooth geçişler ve hover efektleri
-- **Mobil Uyumlu**: Touch gesture desteği
-- **Erişilebilirlik**: Klavye navigasyonu desteği
+- **Modern Frontend**: React 18 + TypeScript + Vite + Tailwind CSS
+- **Güçlü Backend**: Node.js + Express + TypeScript
+- **Veritabanı**: PostgreSQL ile güvenli veri saklama
+- **Yönetim Paneli**: İçerik yönetimi için admin paneli
+- **RESTful API**: Tam CRUD işlemleri
+- **JWT Authentication**: Güvenli kimlik doğrulama
+- **Docker Support**: Kolay deployment
+- **Responsive Design**: Tüm cihazlarda mükemmel görünüm
 
-## 📱 İçerik Bölümleri
+## 📁 Proje Yapısı
 
-### 1. Profil Bölümü
-- Profil fotoğrafı
-- Kişisel bilgiler
-- Sosyal medya linkleri
-
-### 2. Mobil Uygulamalar
-- Uygulama kartları
-- Store linkleri
-- Teknoloji bilgileri
-
-### 3. YouTube Paylaşımları
-- Video thumbnail'ları
-- Video açıklamaları
-- Yayın tarihleri
-
-### 4. Blog Yazıları
-- Blog kartları
-- Kategori etiketleri
-- Okuma linkleri
-
-### 5. Projeler
-- Proje kartları
-- Teknoloji etiketleri
-- Demo ve GitHub linkleri
+```
+MyWebSite/
+├── frontend/          # React frontend uygulaması
+│   ├── src/
+│   │   ├── components/    # React bileşenleri
+│   │   ├── pages/         # Sayfa bileşenleri
+│   │   ├── lib/           # Yardımcı fonksiyonlar
+│   │   └── store/          # State management
+│   └── package.json
+├── backend/           # Node.js backend API
+│   ├── src/
+│   │   ├── routes/        # API route'ları
+│   │   ├── middleware/    # Middleware'ler
+│   │   ├── config/         # Konfigürasyon
+│   │   └── migrations/     # Veritabanı migration'ları
+│   └── package.json
+├── docker-compose.yml # Docker compose konfigürasyonu
+└── README.md
+```
 
 ## 🛠️ Teknolojiler
 
-- **HTML5**: Semantic markup
-- **CSS3**: Modern styling ve animasyonlar
-- **JavaScript**: Etkileşimli özellikler
-- **Font Awesome**: İkonlar
-- **Google Fonts**: Inter font ailesi
+### Frontend
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- TanStack Query (React Query)
+- Zustand (State Management)
+- React Hook Form + Zod
 
-## 📁 Dosya Yapısı
+### Backend
+- Node.js
+- Express
+- TypeScript
+- PostgreSQL
+- JWT Authentication
+- Bcrypt (Password Hashing)
 
-```
-MyWebsite/
-├── index.html          # Ana HTML dosyası
-├── style.css           # CSS stilleri
-├── script.js           # JavaScript işlevleri
-└── README.md           # Proje dokümantasyonu
-```
+## 📦 Kurulum
 
-## 🎨 Tasarım Özellikleri
+### Gereksinimler
+- Node.js 20+
+- PostgreSQL 15+
+- Docker & Docker Compose (opsiyonel)
 
-### Renk Paleti
-- **Ana Renk**: #6366f1 (Indigo)
-- **İkincil Renk**: #10b981 (Emerald)
-- **Arka Plan**: Gradient (Purple to Blue)
-- **Metin**: #1f2937 (Dark Gray)
+### Yerel Geliştirme
 
-### Tipografi
-- **Font**: Inter (Google Fonts)
-- **Başlıklar**: 700 weight
-- **Alt başlıklar**: 600 weight
-- **Normal metin**: 400 weight
-
-## 📱 Responsive Breakpoint'ler
-
-- **Desktop**: 1200px+
-- **Tablet**: 768px - 1199px
-- **Mobile**: 480px - 767px
-- **Small Mobile**: < 480px
-
-## 🚀 Kurulum
-
-1. Dosyaları bilgisayarınıza indirin
-2. `index.html` dosyasını bir web tarayıcısında açın
-3. Veya bir local server kullanın (Live Server gibi)
-
-## ✨ Özelleştirme
-
-### Profil Bilgilerini Değiştirme
-`index.html` dosyasında şu bölümleri güncelleyin:
-
-```html
-<h1 class="name">Adınız Soyadınız</h1>
-<p class="title">Yazılım Geliştirici & İçerik Üreticisi</p>
-<p class="description">Kişisel açıklamanız...</p>
+1. **Repository'yi klonlayın**
+```bash
+git clone <repository-url>
+cd MyWebSite
 ```
 
-### Profil Fotoğrafı Ekleme
-1. Fotoğrafınızı proje klasörüne ekleyin
-2. `index.html` dosyasında img src'yi güncelleyin:
-
-```html
-<img src="profil-fotografiniz.jpg" alt="Profil Fotoğrafı">
+2. **Backend kurulumu**
+```bash
+cd backend
+npm install
+cp .env.example .env
+# .env dosyasını düzenleyin
 ```
 
-### Sosyal Medya Linkleri
-`index.html` dosyasında sosyal medya linklerini güncelleyin:
+3. **Veritabanını oluşturun**
+```bash
+# PostgreSQL'de veritabanı oluşturun
+createdb mywebsite
 
-```html
-<a href="https://github.com/kullaniciadi" class="social-link">
-    <i class="fab fa-github"></i>
-</a>
+# Migration'ları çalıştırın
+psql -U postgres -d mywebsite -f migrations/001_initial_schema.sql
 ```
 
-### İçerik Ekleme
-Her sekme için yeni kartlar ekleyebilirsiniz. Mevcut kartları kopyalayıp içeriklerini değiştirin.
+4. **Backend'i başlatın**
+```bash
+npm run dev
+```
 
-## 🎯 Gelecek Özellikler
+5. **Frontend kurulumu**
+```bash
+cd ../frontend
+npm install
+cp .env.example .env
+# .env dosyasını düzenleyin (VITE_API_URL)
+```
 
-- [ ] Dark mode desteği
-- [ ] Blog yazıları için ayrı sayfalar
-- [ ] İletişim formu
-- [ ] Portfolio galerisi
+6. **Frontend'i başlatın**
+```bash
+npm run dev
+```
+
+### Docker ile Kurulum
+
+1. **Environment dosyalarını oluşturun**
+```bash
+# Backend için
+cd backend
+cp .env.example .env
+# .env dosyasını düzenleyin
+
+# Frontend için
+cd ../frontend
+cp .env.example .env
+# .env dosyasını düzenleyin
+```
+
+2. **Docker Compose ile başlatın**
+```bash
+docker-compose up -d
+```
+
+Bu komut:
+- PostgreSQL veritabanını başlatır
+- Backend API'yi başlatır (port 5000)
+- Frontend'i başlatır (port 3000)
+
+## 🔐 Varsayılan Admin Kullanıcısı
+
+İlk kurulumda varsayılan admin kullanıcısı:
+- **Email**: admin@example.com
+- **Şifre**: admin123
+
+⚠️ **ÖNEMLİ**: Production ortamında mutlaka şifreyi değiştirin!
+
+## 📡 API Endpoints
+
+### Authentication
+- `POST /api/auth/login` - Giriş yap
+- `GET /api/auth/me` - Mevcut kullanıcı bilgisi
+- `POST /api/auth/register` - Yeni kullanıcı oluştur (admin)
+
+### Apps
+- `GET /api/apps` - Tüm uygulamaları listele
+- `GET /api/apps/:id` - Uygulama detayı
+- `POST /api/apps` - Yeni uygulama oluştur (admin)
+- `PUT /api/apps/:id` - Uygulama güncelle (admin)
+- `DELETE /api/apps/:id` - Uygulama sil (admin)
+
+### Blog
+- `GET /api/blog/posts` - Yayınlanmış blog yazıları
+- `GET /api/blog/posts/:slug` - Blog yazısı detayı
+- `GET /api/blog` - Tüm blog yazıları (admin)
+- `POST /api/blog` - Yeni blog yazısı (admin)
+- `PUT /api/blog/:id` - Blog yazısı güncelle (admin)
+- `DELETE /api/blog/:id` - Blog yazısı sil (admin)
+
+### Projects
+- `GET /api/projects` - Tüm projeleri listele
+- `GET /api/projects/:id` - Proje detayı
+- `POST /api/projects` - Yeni proje oluştur (admin)
+- `PUT /api/projects/:id` - Proje güncelle (admin)
+- `DELETE /api/projects/:id` - Proje sil (admin)
+
+### YouTube
+- `GET /api/youtube/videos` - YouTube videolarını getir
+
+## 🎨 Özelleştirme
+
+### Tema Renkleri
+Frontend'deki renkleri `frontend/tailwind.config.js` dosyasından özelleştirebilirsiniz.
+
+### Veritabanı Şeması
+Veritabanı şemasını `backend/migrations/` klasöründeki SQL dosyalarından düzenleyebilirsiniz.
+
+## 🔄 Geliştirme
+
+### Yeni Migration Oluşturma
+```bash
+cd backend
+npm run migrate:create migration_name
+```
+
+### Production Build
+```bash
+# Frontend
+cd frontend
+npm run build
+
+# Backend
+cd backend
+npm run build
+```
+
+## 📝 Notlar
+
+- Backend varsayılan olarak `http://localhost:5000` portunda çalışır
+- Frontend varsayılan olarak `http://localhost:3000` portunda çalışır
+- PostgreSQL varsayılan olarak `localhost:5432` portunda çalışır
+- YouTube API entegrasyonu için `YOUTUBE_API_KEY` environment variable'ı gereklidir
+
+## 🚧 Gelecek Özellikler
+
+- [ ] Dosya yükleme sistemi
 - [ ] SEO optimizasyonu
-- [ ] PWA desteği
+- [ ] Çoklu dil desteği
+- [ ] Analytics entegrasyonu
+- [ ] Email bildirimleri
+- [ ] Redis cache desteği
+- [ ] Unit ve integration testleri
 
 ## 📄 Lisans
 
@@ -129,16 +220,12 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 
 ## 🤝 Katkıda Bulunma
 
-1. Bu repository'yi fork edin
-2. Yeni bir branch oluşturun (`git checkout -b feature/yeni-ozellik`)
-3. Değişikliklerinizi commit edin (`git commit -am 'Yeni özellik eklendi'`)
-4. Branch'inizi push edin (`git push origin feature/yeni-ozellik`)
-5. Pull Request oluşturun
-
-## 📞 İletişim
-
-Herhangi bir sorunuz veya öneriniz varsa, lütfen issue açın.
+1. Fork edin
+2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Commit edin (`git commit -m 'Add some amazing feature'`)
+4. Push edin (`git push origin feature/amazing-feature`)
+5. Pull Request açın
 
 ---
 
-**Not**: Bu template'i kişisel kullanımınız için özelleştirebilirsiniz. Tüm içerikler örnek amaçlıdır ve gerçek projelerinizle değiştirilmelidir. 
+**Not**: Bu proje sürekli geliştirilmektedir. Yeni özellikler ve iyileştirmeler düzenli olarak eklenecektir.
