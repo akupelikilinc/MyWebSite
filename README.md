@@ -12,6 +12,8 @@ Modern, esnek ve ölçeklenebilir bir portfolio ve içerik yönetim sistemi. Rea
 - **JWT Authentication**: Güvenli kimlik doğrulama
 - **Docker Support**: Kolay deployment
 - **Responsive Design**: Tüm cihazlarda mükemmel görünüm
+- **Genel Ayarlar**: Footer, site ayarları ve sosyal medya linkleri yönetimi
+- **Kullanıcı Yönetimi**: Admin kullanıcı ekleme, düzenleme ve silme
 
 ## 📁 Proje Yapısı
 
@@ -66,7 +68,7 @@ MyWebSite/
 
 1. **Repository'yi klonlayın**
 ```bash
-git clone <repository-url>
+git clone https://github.com/akupelikilinc/MyWebSite.git
 cd MyWebSite
 ```
 
@@ -85,6 +87,8 @@ createdb mywebsite
 
 # Migration'ları çalıştırın
 psql -U postgres -d mywebsite -f migrations/001_initial_schema.sql
+psql -U postgres -d mywebsite -f migrations/002_insert_default_data.sql
+psql -U postgres -d mywebsite -f migrations/003_settings_and_user_management.sql
 ```
 
 4. **Backend'i başlatın**
@@ -107,20 +111,7 @@ npm run dev
 
 ### Docker ile Kurulum
 
-1. **Environment dosyalarını oluşturun**
-```bash
-# Backend için
-cd backend
-cp .env.example .env
-# .env dosyasını düzenleyin
-
-# Frontend için
-cd ../frontend
-cp .env.example .env
-# .env dosyasını düzenleyin
-```
-
-2. **Docker Compose ile başlatın**
+1. **Docker Compose ile başlatın**
 ```bash
 docker-compose up -d
 ```
@@ -144,6 +135,9 @@ Bu komut:
 - `POST /api/auth/login` - Giriş yap
 - `GET /api/auth/me` - Mevcut kullanıcı bilgisi
 - `POST /api/auth/register` - Yeni kullanıcı oluştur (admin)
+- `GET /api/auth/users` - Tüm kullanıcıları listele (admin)
+- `PUT /api/auth/users/:id` - Kullanıcı güncelle (admin)
+- `DELETE /api/auth/users/:id` - Kullanıcı sil (admin)
 
 ### Apps
 - `GET /api/apps` - Tüm uygulamaları listele
@@ -169,6 +163,12 @@ Bu komut:
 
 ### YouTube
 - `GET /api/youtube/videos` - YouTube videolarını getir
+
+### Settings
+- `GET /api/settings` - Tüm ayarları getir
+- `GET /api/settings/:key` - Belirli bir ayarı getir
+- `PUT /api/settings/:key` - Ayarı güncelle (admin)
+- `POST /api/settings` - Yeni ayar oluştur (admin)
 
 ## 🎨 Özelleştirme
 

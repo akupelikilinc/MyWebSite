@@ -1,0 +1,82 @@
+@page "/login"
+@using MyWebSite.Admin.Application.Models.Auth
+@using MyWebSite.Admin.Web.Services
+@using MudBlazor
+@using System.ComponentModel.DataAnnotations
+@inject IAuthApiService AuthService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
+    <MudPaper Elevation="3" Class="pa-8">
+        <MudForm @ref="form" @bind-IsValid="@isValid">
+            <MudText Typo="Typo.h4" Class="mb-8">Admin Panel Login</MudText>
+
+            <MudTextField @bind-Value="loginRequest.Email"
+                         Label="Email"
+                         Required="true"
+                         RequiredError="Email is required"
+                         Validation="@(new EmailAddressAttribute() {ErrorMessage = "Invalid email address"})" />
+
+            <MudTextField @bind-Value="loginRequest.Password"
+                         Label="Password"
+                         Required="true"
+                         RequiredError="Password is required"
+                         InputType="InputType.Password"
+                         Class="mt-3" />
+
+            <MudButton Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      FullWidth="true"
+                      OnClick="HandleLogin"
+                      Disabled="!isValid || isLoading"
+                      Class="mt-8">
+                @if (isLoading)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Processing</MudText>
+                }
+                else
+                {
+                    <MudText>Login</MudText>
+                }
+            </MudButton>
+        </MudForm>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private MudForm? form;
+    private bool isValid;
+    private bool isLoading;
+    private LoginRequest loginRequest = new();
+
+    private async Task HandleLogin()
+    {
+        if (!isValid) return;
+
+        try
+        {
+            isLoading = true;
+            var response = await AuthService.LoginAsync(loginRequest);
+            
+            // TODO: Store token and configure authentication state
+            Snackbar.Add("Login successful!", Severity.Success);
+            NavigationManager.NavigateTo("/", true);
+        }
+        catch (AuthenticationException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("An unexpected error occurred. Please try again.", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+            await form!.ResetAsync();
+        }
+    }
+}

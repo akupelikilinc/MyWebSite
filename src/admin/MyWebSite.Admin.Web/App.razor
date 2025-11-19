@@ -1,0 +1,24 @@
+﻿<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <MudText Typo="Typo.h5" Color="Color.Error">You are not authorized to access this page.</MudText>
+            </NotAuthorized>
+            <Authorizing>
+                <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+            </Authorizing>
+        </AuthorizeRouteView>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <MudText Typo="Typo.h4" Color="Color.Error">404 - Page Not Found</MudText>
+            <MudText Typo="Typo.body1">The requested page could not be found.</MudText>
+        </LayoutView>
+    </NotFound>
+</Router>
